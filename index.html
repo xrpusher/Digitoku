@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Digitoku</title>
-  <!-- Make the page scale properly on phones -->
+  <!-- Корректное масштабирование на мобильных устройствах -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Greeting Screen -->
+  <!-- Экран приветствия -->
   <div id="greeting-screen">
     <h1>Happy International Women's Day!</h1>
     <p>
@@ -19,21 +19,21 @@
     <button id="enter-button">Play Digitoku</button>
   </div>
 
-  <!-- Game Container -->
+  <!-- Игровой контейнер -->
   <div id="game-container" style="display: none;">
     
-    <!-- Left panel with stats -->
+    <!-- Левая панель со статистикой -->
     <div id="stats-panel">
       <h2>Statistics</h2>
       <p id="games-played">Games played: 0</p>
       <p id="best-score">Best score: 0</p>
     </div>
 
-    <!-- Main content area -->
+    <!-- Основной контент -->
     <div id="main-content">
       <h1>Digitoku</h1>
 
-      <!-- Mode Selection -->
+      <!-- Выбор режима игры -->
       <div id="mode-container">
         <label for="mode-select">Choose mode:</label>
         <select id="mode-select">
@@ -42,18 +42,18 @@
         </select>
       </div>
       
-      <!-- Info Panel: Score and hearts goal -->
+      <!-- Информационная панель: счёт и цель для Hearts Mode -->
       <div id="info-panel">
         <div id="score">Score: 0</div>
         <div id="hearts-goal" style="display: none;"></div>
       </div>
       
-      <!-- Main 9×9 board -->
+      <!-- Основное поле 9×9 -->
       <div id="board-container">
         <div id="board"></div>
       </div>
 
-      <!-- Blocks (3 at a time) -->
+      <!-- Блоки (по 3 штуки) -->
       <div id="blocks-container">
         <h2>Your Blocks</h2>
         <div id="blocks"></div>
@@ -63,7 +63,7 @@
     </div>
   </div>
 
-  <!-- Game Over / Victory Screen -->
+  <!-- Экран "Game Over" / Победы -->
   <div id="game-over-screen" style="display: none;">
     <div class="game-over-content">
       <h2 id="game-over-title">Game Over!</h2>

@@ -1,34 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Greeting screen to game
+    // Элементы для приветственного экрана и игры
     const enterButton = document.getElementById('enter-button');
     const greetingScreen = document.getElementById('greeting-screen');
     const gameContainer = document.getElementById('game-container');
+    const modeSelect = document.getElementById('mode-select');
   
-    // Load stats from localStorage at startup
+    // Загрузка статистики из localStorage
     loadStats();
   
     enterButton.addEventListener('click', () => {
-      // Hide greeting, show game
       greetingScreen.style.display = 'none';
       gameContainer.style.display = 'flex';
-  
-      // Increment total games played
       incrementGamesPlayed();
       updateStatsDisplay();
     });
   
-    // Switch mode
     modeSelect.addEventListener('change', () => {
       resetGame();
     });
   
-    // Start default game
+    // Запуск игры по умолчанию
     resetGame();
   });
   
-  /* ================ */
+  /* ================= */
   /* Game Parameters  */
-  /* ================ */
+  /* ================= */
   const boardSize = 9;
   let board = [];
   let score = 0;
@@ -40,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let heartsCount = 6;
   let heartsCleared = 0;
   
-  // LocalStorage stats
+  // Статистика в localStorage
   let gamesPlayed = 0;
   let bestScore = 0;
   
-  /* DOM References */
+  /* DOM Элементы */
   const boardElement = document.getElementById('board');
   const blocksElement = document.getElementById('blocks');
   const scoreElement = document.getElementById('score');
@@ -52,15 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const finalScoreElement = document.getElementById('final-score');
   const playAgainButton = document.getElementById('play-again-button');
   const resetButton = document.getElementById('reset-button');
-  const modeSelect = document.getElementById('mode-select');
   const heartsGoalElement = document.getElementById('hearts-goal');
   const gameOverTitle = document.getElementById('game-over-title');
   
-  /* Currently dragging block */
+  /* Перетаскиваемый блок */
   let draggedBlock = null;
   
   /* ======================= */
-  /* Initialize the Board    */
+  /* Инициализация поля     */
   /* ======================= */
   function initBoard() {
     board = [];
@@ -75,10 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cell.dataset.row = i;
         cell.dataset.col = j;
   
-        // Click-to-place
         cell.addEventListener('click', () => cellClick(i, j));
-  
-        // Drag & Drop highlight + drop
         cell.addEventListener('dragover', (e) => handleDragOver(e, i, j));
         cell.addEventListener('drop', (e) => handleDrop(e, i, j));
   
@@ -89,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Hearts Mode Placement   */
+  /* Размещение Hearts Mode  */
   /* ======================= */
   function placeHearts() {
     let placed = 0;
@@ -97,14 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
       let r = Math.floor(Math.random() * boardSize);
       let c = Math.floor(Math.random() * boardSize);
       if (board[r][c] === 0) {
-        board[r][c] = 'H'; // 'H' for Heart
+        board[r][c] = 'H';
         placed++;
       }
     }
   }
   
   /* ======================= */
-  /* Update Board Rendering  */
+  /* Обновление поля        */
   /* ======================= */
   function updateBoard() {
     const cells = boardElement.querySelectorAll('.cell');
@@ -117,22 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.innerHTML = '';
   
       if (typeof value === 'number' && value > 0) {
-        // Digit
         cell.classList.add('filled');
         let numberDiv = document.createElement('div');
         numberDiv.classList.add('cell-number');
         numberDiv.textContent = value;
         cell.appendChild(numberDiv);
       } else if (value === 'H') {
-        // Heart
         cell.classList.add('heart');
       }
     });
   
     scoreElement.textContent = 'Score: ' + score;
   
-    // Hearts Mode => display hearts goal
-    if (modeSelect.value === 'hearts') {
+    if (document.getElementById('mode-select').value === 'hearts') {
       heartsGoalElement.style.display = 'block';
       heartsGoalElement.textContent = `Goal: clear ${heartsGoal} hearts (cleared: ${heartsCleared})`;
     } else {
@@ -141,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* DRAG & DROP Handlers    */
+  /* Drag & Drop обработчики */
   /* ======================= */
   function handleDragOver(e, row, col) {
     e.preventDefault();
@@ -170,10 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedBlock = null;
       clearBlockSelection();
   
-      checkAndClear(); 
+      checkAndClear();
       updateBoard();
   
-      // If no blocks left, generate new set
       if (currentBlocks.length === 0) {
         generateBlocks();
       }
@@ -210,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Click Mechanics         */
+  /* Логика клика по ячейке  */
   /* ======================= */
   function cellClick(row, col) {
     if (!selectedBlock) return;
@@ -232,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Checking Fit & Placing  */
+  /* Проверка возможности установки */
   /* ======================= */
   function canPlaceBlock(block, row, col) {
     const shape = block.shape;
@@ -241,9 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (shape[i][j] !== 0) {
           let rr = row + i;
           let cc = col + j;
-          // Out of bounds
           if (rr >= boardSize || cc >= boardSize) return false;
-          // Can't overlap digits or hearts
           if (typeof board[rr][cc] === 'number' && board[rr][cc] !== 0) return false;
           if (board[rr][cc] === 'H') return false;
         }
@@ -264,18 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Check & Clear Lines     */
+  /* Проверка и очистка линий */
   /* ======================= */
   function checkAndClear() {
     let rowsToClear = [];
     let colsToClear = [];
     let boxesToClear = [];
   
-    // For hearts mode, hearts do NOT prevent clearing. Only zeros do.
-    // So we check for zero only (not hearts).
-    // If there's no zero in the row/col/box => it's full => remove hearts & digits.
-    
-    // Full rows
     for (let i = 0; i < boardSize; i++) {
       let noZeros = true;
       for (let j = 0; j < boardSize; j++) {
@@ -287,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (noZeros) rowsToClear.push(i);
     }
   
-    // Full columns
     for (let j = 0; j < boardSize; j++) {
       let noZeros = true;
       for (let i = 0; i < boardSize; i++) {
@@ -299,7 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (noZeros) colsToClear.push(j);
     }
   
-    // Full 3×3 boxes
     for (let boxRow = 0; boxRow < 3; boxRow++) {
       for (let boxCol = 0; boxCol < 3; boxCol++) {
         let noZeros = true;
@@ -320,7 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   
-    // Clear rows
     rowsToClear.forEach(r => {
       for (let j = 0; j < boardSize; j++) {
         if (board[r][j] === 'H') heartsCleared++;
@@ -329,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
       score += 10;
     });
   
-    // Clear columns
     colsToClear.forEach(c => {
       for (let i = 0; i < boardSize; i++) {
         if (board[i][c] === 'H') heartsCleared++;
@@ -338,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
       score += 10;
     });
   
-    // Clear boxes
     boxesToClear.forEach(box => {
       const startRow = box.row * 3;
       const startCol = box.col * 3;
@@ -355,50 +332,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Check Game Over         */
+  /* Проверка окончания игры */
   /* ======================= */
   function checkGameOver() {
-    // If hearts mode => check if we cleared enough
-    if (modeSelect.value === 'hearts' && heartsCleared >= heartsGoal) {
+    if (document.getElementById('mode-select').value === 'hearts' && heartsCleared >= heartsGoal) {
       showGameResult(true);
       return;
     }
-    // Otherwise, see if there's any valid move
     for (let b = 0; b < currentBlocks.length; b++) {
       for (let i = 0; i < boardSize; i++) {
         for (let j = 0; j < boardSize; j++) {
           if (canPlaceBlock(currentBlocks[b], i, j)) {
-            return; // still a move
+            return;
           }
         }
       }
     }
-    // No moves
     showGameResult(false);
   }
   
-  /* ======================= */
-  /* Show Game Over/Win      */
-  /* ======================= */
   function showGameResult(victory) {
     gameOverScreen.style.display = 'flex';
-    if (victory) {
-      gameOverTitle.textContent = 'You Win!';
-    } else {
-      gameOverTitle.textContent = 'Game Over!';
-    }
+    gameOverTitle.textContent = victory ? 'You Win!' : 'Game Over!';
     finalScoreElement.textContent = `Final score: ${score}`;
   
-    // Update best score if needed
     if (score > bestScore) {
       bestScore = score;
       saveStats();
     }
   }
   
-  /* =============== */
-  /* Block Creation  */
-  /* =============== */
+  /* ================= */
+  /* Создание блоков  */
+  /* ================= */
   const blockShapes = [
     [[1]], [[1,1]], [[1],[1]],
     [[1,1,1]],
@@ -436,8 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
     blockDiv.draggable = true;
   
     const cellSize = 40;
-  
-    // bounding box
     let minRow = block.shape.length, maxRow = -1;
     let minCol = block.shape[0].length, maxCol = -1;
     for (let i = 0; i < block.shape.length; i++) {
@@ -466,7 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let j = minCol; j <= maxCol; j++) {
         let cellDiv = document.createElement('div');
         cellDiv.classList.add('block-cell');
-  
         if (block.shape[i][j] !== 0) {
           let numDiv = document.createElement('div');
           numDiv.classList.add('cell-number');
@@ -480,7 +443,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     blockDiv.appendChild(gridDiv);
   
-    // Click select
     blockDiv.addEventListener('click', () => {
       clearBlockSelection();
       blockDiv.classList.add('selected');
@@ -488,21 +450,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     blockDiv.addEventListener('dragstart', (e) => {
-        // Without this, iOS tries to generate a possibly black background
-        e.dataTransfer.setData('text/plain', '');
-      
-        // Create a tiny transparent image
-        const img = new Image();
-        // 1×1 invisible GIF
-        img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
-        e.dataTransfer.setDragImage(img, 0, 0);
-      
-        clearBlockSelection();
-        blockDiv.classList.add('selected');
-        selectedBlock = block;
-        draggedBlock = block;
-      });
-      
+      e.dataTransfer.setData('text/plain', '');
+      // Прозрачное изображение для предотвращения создания черного ghost image на iOS
+      const img = new Image();
+      img.src = 'data:image/gif;base64,R0lGODdhAQABAAAAACw=';
+      e.dataTransfer.setDragImage(img, 0, 0);
+  
+      clearBlockSelection();
+      blockDiv.classList.add('selected');
+      selectedBlock = block;
+      draggedBlock = block;
+    });
+  
     blockDiv.addEventListener('dragend', () => {
       draggedBlock = null;
       blockDiv.classList.remove('selected');
@@ -513,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Reset the Game          */
+  /* Сброс игры             */
   /* ======================= */
   function resetGame() {
     gameOverScreen.style.display = 'none';
@@ -521,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     heartsCleared = 0;
   
     initBoard();
-    if (modeSelect.value === 'hearts') {
+    if (document.getElementById('mode-select').value === 'hearts') {
       placeHearts();
     }
     generateBlocks();
@@ -529,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* ======================= */
-  /* Stats in localStorage   */
+  /* Статистика (localStorage) */
   /* ======================= */
   function loadStats() {
     const savedGames = localStorage.getItem('gamesPlayed');
@@ -555,13 +514,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const gamesPlayedElement = document.getElementById('games-played');
     const bestScoreElement = document.getElementById('best-score');
     if (!gamesPlayedElement || !bestScoreElement) return;
-    
+  
     gamesPlayedElement.textContent = `Games played: ${gamesPlayed}`;
     bestScoreElement.textContent = `Best score: ${bestScore}`;
   }
   
   /* ======================= */
-  /* Control Buttons         */
+  /* Кнопки управления      */
   /* ======================= */
   playAgainButton.addEventListener('click', () => {
     incrementGamesPlayed();
@@ -573,10 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
     resetGame();
   });
   
-  /* Clear any highlight from previously selected block */
   function clearBlockSelection() {
-    const blockDivs = document.querySelectorAll('.block');
-    blockDivs.forEach(div => div.classList.remove('selected'));
+    document.querySelectorAll('.block').forEach(div => div.classList.remove('selected'));
     selectedBlock = null;
   }
   

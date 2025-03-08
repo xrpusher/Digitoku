@@ -1,10 +1,21 @@
-/* ================= */
-/* GLOBAL RESETS     */
-/* ================= */
+/* Глобальные сбросы */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+  }
+  
+  /* Отключение выделения текста и вызова контекстного меню на iOS */
+  body, 
+  #board, 
+  #blocks, 
+  .block, 
+  .cell, 
+  .block-cell, 
+  .block-grid {
+    -webkit-user-select: none;     /* iOS Safari */
+    -webkit-touch-callout: none;     /* iOS Safari */
+    user-select: none;               /* Стандартные браузеры */
   }
   
   body {
@@ -13,9 +24,7 @@
     color: #333;
   }
   
-  /* ================= */
-  /* GREETING SCREEN   */
-  /* ================= */
+  /* Экран приветствия */
   #greeting-screen {
     display: flex;
     flex-direction: column;
@@ -49,34 +58,34 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
   }
+  
   #greeting-screen button:hover {
     background-color: #ff3b2f;
   }
   
-  /* ================= */
-  /* GAME CONTAINER    */
-  /* ================= */
+  /* Игровой контейнер */
   #game-container {
-    display: flex;         /* stats on the left, content on the right for wide screens */
+    display: flex;
     max-width: 1200px;
     margin: 20px auto;
     background-color: #fff;
     box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
     border-radius: 10px;
-    overflow: hidden;      /* prevent overflow on small screens */
+    overflow: hidden;
   }
   
-  /* Stats panel (desktop) */
+  /* Панель статистики (desktop) */
   #stats-panel {
     width: 250px;
     padding: 20px;
     border-right: 2px solid #eee;
   }
+  
   #stats-panel h2 {
     margin-top: 0;
   }
   
-  /* MAIN CONTENT */
+  /* Основной контент */
   #main-content {
     flex: 1;
     padding: 20px;
@@ -89,10 +98,11 @@
     color: #333;
   }
   
-  /* Mode selector, score, hearts goal */
+  /* Выбор режима, счёт, цель для Hearts Mode */
   #mode-container {
     margin-bottom: 10px;
   }
+  
   #mode-select {
     font-size: 1em;
     padding: 5px 10px;
@@ -105,18 +115,18 @@
     gap: 20px;
     margin-bottom: 10px;
   }
+  
   #score {
     font-size: 1.2em;
     color: #555;
   }
+  
   #hearts-goal {
     font-size: 1.2em;
     color: #555;
   }
   
-  /* ================= */
-  /* 9×9 BOARD         */
-  /* ================= */
+  /* Поле 9×9 */
   #board-container {
     margin: 20px auto;
     width: 450px;
@@ -134,32 +144,27 @@
     grid-template-rows: repeat(9, 1fr);
   }
   
-  /* Board cells */
+  /* Ячейки поля */
   .cell {
     border: 1px solid #ddd;
     position: relative;
-    box-sizing: border-box;
   }
   
-  /* Green highlight if a block fits here */
   .cell.highlight-can {
     background-color: rgba(46, 204, 113, 0.3);
   }
   
-  /* Filled (digit) cell */
   .cell.filled {
     background-color: #e0f7fa;
   }
   
-  /* Heart cell in Hearts mode */
   .cell.heart {
-    background-color: #f9c6d8 !important; /* fallback */
+    background-color: #f9c6d8 !important;
     background-image: url("images/hearts.webp");
     background-size: cover;
     background-position: center;
   }
   
-  /* Digit inside the board cell */
   .cell .cell-number {
     position: absolute;
     top: 50%;
@@ -170,49 +175,45 @@
     color: #333;
   }
   
-  /* ================= */
-  /* BLOCKS            */
-  /* ================= */
+  /* Блоки */
   #blocks-container {
     margin-top: 20px;
   }
+  
   #blocks-container h2 {
     font-size: 1.3em;
     margin-bottom: 10px;
     color: #333;
   }
   
-    /* Prevent blocks from spilling out of their own container */
-    #blocks {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 100%;
-        overflow-x: auto; /* horizontal scroll if absolutely needed */
-    }
-
-    /* Force each .block to not exceed its container */
-    .block {
-        max-width: 100%;
-        overflow: hidden; /* hides any part of the block that overflows */
-        margin: 5px;      /* small margin if needed */
-    }
-
-
+  #blocks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .block {
+    max-width: 100%;
+    overflow: hidden;
+    margin: 5px;
+    transition: transform 0.2s;
+  }
+  
   .block:hover {
     transform: scale(1.05);
   }
+  
   .block.selected {
     border-color: #ff4500;
   }
   
-  /* The mini-grid inside each block */
   .block-grid {
     display: grid;
     grid-gap: 2px;
   }
   
-  /* Each cell inside a block shape */
   .block-cell {
     width: 40px;
     height: 40px;
@@ -220,8 +221,8 @@
     position: relative;
     background-color: #c8e6c9;
     border-radius: 3px;
-    box-sizing: border-box;
   }
+  
   .block-cell .cell-number {
     position: absolute;
     top: 50%;
@@ -232,7 +233,7 @@
     color: #333;
   }
   
-  /* New Game button */
+  /* Кнопка новой игры */
   #reset-button {
     margin-top: 10px;
     padding: 10px 20px;
@@ -244,13 +245,12 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
   }
+  
   #reset-button:hover {
     background-color: #ff3b2f;
   }
   
-  /* ================= */
-  /* GAME OVER SCREEN  */
-  /* ================= */
+  /* Экран Game Over */
   #game-over-screen {
     position: fixed;
     top: 0;
@@ -262,6 +262,7 @@
     align-items: center;
     justify-content: center;
   }
+  
   .game-over-content {
     background-color: #fff;
     padding: 30px;
@@ -270,16 +271,19 @@
     max-width: 400px;
     width: 80%;
   }
+  
   .game-over-content h2 {
     font-size: 2em;
     margin-bottom: 20px;
     color: #333;
   }
+  
   .game-over-content p {
     font-size: 1.2em;
     margin-bottom: 20px;
     color: #555;
   }
+  
   .game-over-content button {
     padding: 10px 20px;
     font-size: 1em;
@@ -290,59 +294,53 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
   }
+  
   .game-over-content button:hover {
     background-color: #ff3b2f;
   }
   
-  /* ================= */
-  /* RESPONSIVE BREAKS */
-  /* ================= */
+  /* Адаптивные стили для маленьких экранов */
   @media (max-width: 600px) {
-  
-    /* Stack stats panel above main content */
     #game-container {
       flex-direction: column;
       margin: 0 auto;
       width: 100%;
       border-radius: 0;
     }
-  
+    
     #stats-panel {
       width: 100%;
       border-right: none;
       border-bottom: 2px solid #eee;
     }
-  
+    
     #main-content {
       padding: 10px;
     }
-  
-    /* Adjust board size to ~90% of viewport width */
+    
     #board-container {
       width: 90vw;
-      height: 90vw;        /* keep the board square */
-      max-width: 450px;    /* optional clamp so it doesn't exceed 450px */
+      height: 90vw;
+      max-width: 450px;
       max-height: 450px;
       margin: 10px auto;
     }
-  
+    
     #main-content h1 {
       font-size: 1.8em;
     }
-  
+    
     #score, #hearts-goal {
       font-size: 1em;
     }
-  
-    /* Reduce block cell size on narrow screens */
+    
     .block-cell {
       width: 30px;
       height: 30px;
     }
-  
+    
     .cell .cell-number,
     .block-cell .cell-number {
       font-size: 14px;
     }
-  }
-  
+  }  
