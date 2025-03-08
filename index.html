@@ -6,10 +6,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <!-- Greeting Screen -->
     <div id="greeting-screen">
         <h1>Happy International Women's Day!</h1>
-        <p>May your day be filled with beauty, joy, and endless inspiration. Enjoy this special moment with Digitoku.</p>
+        <p>
+            May your day be filled with beauty, joy, and endless inspiration.
+            Enjoy this special moment with Digitoku.
+        </p>
         <button id="enter-button">Enter Digitoku</button>
     </div>
 
@@ -17,16 +21,31 @@
     <div id="game-container" style="display: none;">
         <h1>Digitoku</h1>
         <div id="score">Score: 0</div>
+        
+        <!-- Основное поле -->
         <div id="board-container">
             <div id="board"></div>
         </div>
+
+        <!-- Блоки для размещения -->
         <div id="blocks-container">
             <h2>Your Blocks</h2>
             <div id="blocks"></div>
         </div>
+
+        <!-- Кнопка сброса -->
         <button id="reset-button">New Game</button>
     </div>
-    
+
+    <!-- Game Over Screen (скрыт изначально) -->
+    <div id="game-over-screen" style="display: none;">
+        <div class="game-over-content">
+            <h2>Game Over!</h2>
+            <p id="final-score"></p>
+            <button id="play-again-button">Play Again</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
