@@ -488,14 +488,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     blockDiv.addEventListener('dragstart', (e) => {
-      // Ensure drag works in all browsers
-      e.dataTransfer.setData('text/plain', '');
-      clearBlockSelection();
-      blockDiv.classList.add('selected');
-      selectedBlock = block;
-      draggedBlock = block;
-    });
-  
+        // Without this, iOS tries to generate a possibly black background
+        e.dataTransfer.setData('text/plain', '');
+      
+        // Create a tiny transparent image
+        const img = new Image();
+        // 1×1 invisible GIF
+        img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+        e.dataTransfer.setDragImage(img, 0, 0);
+      
+        clearBlockSelection();
+        blockDiv.classList.add('selected');
+        selectedBlock = block;
+        draggedBlock = block;
+      });
+      
     blockDiv.addEventListener('dragend', () => {
       draggedBlock = null;
       blockDiv.classList.remove('selected');
