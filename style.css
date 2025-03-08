@@ -1,16 +1,14 @@
 /* =============== */
-/* Общие стили     */
+/* General Styles  */
 /* =============== */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-}
-
-/* =============== */
-/* Экран приветствия */
-/* =============== */
-#greeting-screen {
+  }
+  
+  /* Greeting Screen */
+  #greeting-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,21 +18,21 @@ body {
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     color: #333;
     padding: 20px;
-}
-
-#greeting-screen h1 {
+  }
+  
+  #greeting-screen h1 {
     font-size: 3em;
     margin-bottom: 0.5em;
-}
-
-#greeting-screen p {
+  }
+  
+  #greeting-screen p {
     font-size: 1.2em;
     max-width: 600px;
     margin-bottom: 1.5em;
     line-height: 1.6;
-}
-
-#greeting-screen button {
+  }
+  
+  #greeting-screen button {
     padding: 10px 20px;
     font-size: 1.2em;
     cursor: pointer;
@@ -43,130 +41,195 @@ body {
     color: #fff;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-}
-
-#greeting-screen button:hover {
+  }
+  
+  #greeting-screen button:hover {
     background-color: #ff3b2f;
-}
-
-/* =============== */
-/* Основная игра   */
-/* =============== */
-#game-container {
-    max-width: 900px;
+  }
+  
+  /* ============== */
+  /* Game Container */
+  /* ============== */
+  #game-container {
+    display: flex;            /* we use flex to place stats on the left and main content on the right */
+    max-width: 1200px;
     margin: 20px auto;
-    text-align: center;
-    padding: 20px;
     background-color: #fff;
     box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
     border-radius: 10px;
-    position: relative;
-}
-
-#game-container h1 {
+  }
+  
+  /* Stats Panel on the left */
+  #stats-panel {
+    width: 250px;
+    padding: 20px;
+    border-right: 2px solid #eee;
+    box-sizing: border-box;
+  }
+  
+  #stats-panel h2 {
+    margin-top: 0;
+  }
+  
+  #main-content {
+    flex: 1;                  /* fill remaining space */
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  
+  #main-content h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
     color: #333;
-}
-
-#score {
+  }
+  
+  #mode-container {
+    margin-bottom: 10px;
+  }
+  
+  #mode-select {
+    font-size: 1em;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  #info-panel {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+  }
+  
+  #score {
     font-size: 1.5em;
-    margin-bottom: 15px;
     color: #555;
-}
-
-#board-container {
+  }
+  
+  #hearts-goal {
+    font-size: 1.5em;
+    color: #555;
+  }
+  
+  /* 9×9 Board */
+  #board-container {
     margin: 20px auto;
     width: 450px;
     height: 450px;
+    background-color: #f9f9f9;
     border: 2px solid #333;
+    border-radius: 5px;
+  }
+  
+  #board {
+    width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     grid-template-rows: repeat(9, 1fr);
-    background-color: #f9f9f9;
-    border-radius: 5px;
-}
-
-.cell {
+  }
+  
+  /* Board Cells */
+  .cell {
     border: 1px solid #ddd;
-    box-sizing: border-box;
     position: relative;
-}
-
-.cell.filled {
+    box-sizing: border-box;
+  }
+  
+  /* Highlight when block can fit */
+  .cell.highlight-can {
+    background-color: rgba(46, 204, 113, 0.3);
+  }
+  
+  /* Filled cell with digits */
+  .cell.filled {
     background-color: #e0f7fa;
-}
-
-.cell .cell-number {
+  }
+  
+  /* Heart cell in Hearts Mode */
+  .cell.heart {
+    background-color: #f9c6d8 !important; /* fallback color */
+   /* If you want a hearts image: */
+       background-image: url("images/hearts.webp");
+       background-size: cover;
+       background-position: center;
+    
+  }
+  
+  /* Digit inside board cell */
+  .cell .cell-number {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     color: #333;
-}
-
-/* Блоки, которые нужно размещать */
-#blocks-container {
+  }
+  
+  /* Blocks Container */
+  #blocks-container {
     margin-top: 20px;
-}
-
-#blocks-container h2 {
+  }
+  
+  #blocks-container h2 {
     font-size: 1.8em;
     margin-bottom: 10px;
     color: #333;
-}
-
-#blocks {
+  }
+  
+  #blocks {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
-}
-
-.block {
+  }
+  
+  .block {
     border: 2px solid #333;
     background-color: #fff;
     padding: 5px;
-    cursor: pointer;
     border-radius: 5px;
     transition: transform 0.2s;
-}
-
-.block:hover {
+    cursor: move;
+  }
+  
+  .block:hover {
     transform: scale(1.05);
-}
-
-.block.selected {
+  }
+  
+  .block.selected {
     border-color: #ff4500;
-}
-
-.block-grid {
+  }
+  
+  .block-grid {
     display: grid;
     grid-gap: 2px;
-}
-
-.block-cell {
-    width: 30px;
-    height: 30px;
+  }
+  
+  .block-cell {
+    width: 40px;
+    height: 40px;
     border: 1px solid #ddd;
-    box-sizing: border-box;
-    background-color: #c8e6c9;
     position: relative;
+    background-color: #c8e6c9;
     border-radius: 3px;
-}
-
-.block-cell .cell-number {
+    box-sizing: border-box;
+  }
+  
+  .block-cell .cell-number {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: bold;
     color: #333;
-}
-
-/* Кнопка "New Game" */
-#reset-button {
+  }
+  
+  /* New Game Button */
+  #reset-button {
     margin-top: 10px;
     padding: 10px 20px;
     font-size: 1em;
@@ -176,16 +239,14 @@ body {
     color: #fff;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-}
-
-#reset-button:hover {
+  }
+  
+  #reset-button:hover {
     background-color: #ff3b2f;
-}
-
-/* =============== */
-/* Экран Game Over */
-/* =============== */
-#game-over-screen {
+  }
+  
+  /* Game Over Screen */
+  #game-over-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -195,30 +256,30 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.game-over-content {
+  }
+  
+  .game-over-content {
     background-color: #fff;
     padding: 30px;
     border-radius: 10px;
     text-align: center;
     max-width: 400px;
     width: 80%;
-}
-
-.game-over-content h2 {
+  }
+  
+  .game-over-content h2 {
     font-size: 2em;
     margin-bottom: 20px;
     color: #333;
-}
-
-.game-over-content p {
+  }
+  
+  .game-over-content p {
     font-size: 1.2em;
     margin-bottom: 20px;
     color: #555;
-}
-
-.game-over-content button {
+  }
+  
+  .game-over-content button {
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
@@ -227,8 +288,8 @@ body {
     color: #fff;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-}
-
-.game-over-content button:hover {
+  }
+  
+  .game-over-content button:hover {
     background-color: #ff3b2f;
-}
+  }  
